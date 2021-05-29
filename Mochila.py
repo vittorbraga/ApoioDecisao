@@ -22,9 +22,9 @@ tempo_execucao = 5 # minutos                    #                     Variaveis 
 n_de_itens = len(pesos_e_valores)               #                                                                #
 taxa_cruzamento_variavel = 1.0                  #                                                                #
 taxa_mutacao_variavel = 0.05                    ##################################################################
-operador_selecao = 1                            # 1 = roleta / 2 = ranking
-operador_cruzamento = 1                         # 1 = crossover_1_ponto / 2 = crossover_2_pontos
-tecnica_populacao = 1                           # 1 = substituicao / 2 = elitismo
+operador_selecao = 2                            # 1 = roleta / 2 = ranking
+operador_cruzamento = 2                         # 1 = crossover_1_ponto / 2 = crossover_2_pontos
+tecnica_populacao = 2                           # 1 = substituicao / 2 = elitismo
 
 #EXECUCAO DOS PROCEDIMENTOS
 populacao = population(n_de_cromossomos, n_de_itens, pesos_e_valores, peso_maximo)  # gerar a populacao inicial
@@ -48,9 +48,21 @@ while ((datetime.datetime.now() < data_parada) and (i <= geracoes)): # a parada 
     populacao = filhos
     populacao, valores = ordenar_por_fitness(populacao, peso_maximo, pesos_e_valores)
     historico_maior_fitness.append(fitness(populacao[0], peso_maximo, pesos_e_valores)) # armazena o fitness do melhor individuo da populacao
+    print("geracao "+ str(i))
+    itens = ""
+    for indice in range(len(populacao[0])):
+        if (populacao[0][indice] == 1):
+            itens += str(indice) + ", "
+    print(itens)
+    peso_total, utilidade_total, valor_total = 0, 0, 0
+    for indice, valor in enumerate(populacao[0]):
+        peso_total += (populacao[0][indice] * pesos_e_valores[indice][0])
+        utilidade_total += (populacao[0][indice] * pesos_e_valores[indice][1])
+        valor_total += (populacao[0][indice] * pesos_e_valores[indice][2])
+    print("Peso: " + str(peso_total) + " - Utilidade: " + str(utilidade_total) + " - Valor: " + str(valor_total))
 
 # #PRINTS DO TERMINAL
-for indice in enumerate(historico_maior_fitness):
+for indice in range(len(historico_maior_fitness)):
    print ("Geracao: ", indice," | Maior fitness na mochila: ", historico_maior_fitness[indice])
 
 # print("\nExemplos de boas solucoes: ")

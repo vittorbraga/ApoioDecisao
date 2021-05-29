@@ -84,12 +84,12 @@ def selecao_ranking(populacao, valores):
     homem, mulher = [], []
     h, m = rand.uniform(0.9, 10.1), rand.uniform(0.9, 10.1)
     for x in range(len(valores)):
-        if valores[x][1][1] <= h and valores[ (x if x+1 >= len(valores) else x+1) ][1][1] <= h:
-            homem = populacao[x]
+        if valores[x][1][1] <= h and valores[ (x if x+1 >= len(valores) else x+1) ][1][1] <= h and x > 0:
+            homem = populacao[valores[x][1][0]]
             break
     for x in range(len(valores)):
-        if valores[x][1][1] <= m and valores[ (x if x+1 >= len(valores) else x+1) ][1][1] <= m:
-            mulher = populacao[x]
+        if valores[x][1][1] <= m and valores[ (x if x+1 >= len(valores) else x+1) ][1][1] <= m and x > 0:
+            mulher = populacao[valores[x][1][0]]
             break
     return homem, mulher
 
