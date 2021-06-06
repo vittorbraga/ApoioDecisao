@@ -4,7 +4,7 @@ import random as rand
 def population(n_de_individuos, n_de_itens, pesos_e_valores, peso_maximo):
     """"Cria a populacao"""
     populacao = []
-    for x in range(n_de_individuos / 2): # metade da populacao vai caber dentro da mochila
+    for x in range(n_de_individuos // 2): # metade da populacao vai caber dentro da mochila
         individuo_qualificado = [ 0 for x in range(n_de_itens) ] # todas as posicoes iniciam com 0
         peso = 0
         while (peso < peso_maximo): # enquanto o peso dos objetos inseridos na mochila for menor que o peso maximo inserimos o elemento na mochila
@@ -14,7 +14,7 @@ def population(n_de_individuos, n_de_itens, pesos_e_valores, peso_maximo):
                 individuo_qualificado[index] = 1
         populacao.append(individuo_qualificado)
 
-    for x in range(n_de_individuos / 2): # a outra metade vai ser gerada randomicamente
+    for x in range(n_de_individuos // 2): # a outra metade vai ser gerada randomicamente
         populacao.append([ getrandbits(1) for x in range(n_de_itens) ])
     return populacao
 
@@ -147,3 +147,33 @@ def evolve(populacao, peso_maximo, pesos_e_valores, n_de_cromossomos, mutate=0.0
                 individuo[pos_to_mutate] = 1
 
     return filhos
+
+def distancia_individuo(individuo_conjunto, individuo):
+    distancia = 0
+    for index in range(len(individuo_conjunto)):
+        if(individuo_conjunto[index] != individuo[index]):
+            distancia += 1
+    return distancia
+
+def tem_convergencia(populacao, k, y, m):
+    i = 1
+    conjuntos = []
+    conjuntos.append([1, populacao[0]])
+    while (i <= len(populacao)) and (len(conjuntos) < k):
+        j = 1
+        while (j <= len(conjuntos)):
+            if distancia_individuo(conjuntos[j-1][1], populacao[i]) < y:
+                conjuntos[j-1][0] += 1
+                if conjuntos[j-1][0] > m:
+                    # print(conjuntos)
+                    return True
+                break
+            j += 1
+        if j > len(conjuntos):
+           conjuntos.append([1, populacao[i]])
+        i += 1
+    if len(conjuntos) < k:
+        # print(conjuntos)
+        return True
+    # print(conjuntos)
+    return False
